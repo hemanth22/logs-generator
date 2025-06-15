@@ -2,6 +2,11 @@ import logging
 from logging.handlers import RotatingFileHandler
 import time
 import random
+import os
+
+# Log directory
+LOG_DIR = "/home/bitroidapps/logs"
+LOG_FILE = os.path.join(LOG_DIR, "dummy.log")
 
 # Dummy lorem text
 LOREM = [
@@ -13,13 +18,16 @@ LOREM = [
 ]
 
 def setup_logger():
+    # Ensure log directory exists
+    os.makedirs(LOG_DIR, exist_ok=True)
+
     # Create logger
     logger = logging.getLogger("DummyLogger")
     logger.setLevel(logging.INFO)
 
     # Configure RotatingFileHandler
     handler = RotatingFileHandler(
-        "dummy.log", maxBytes=5 * 1024 * 1024, backupCount=5  # 5 MB max, keep 5 backups
+        LOG_FILE, maxBytes=5 * 1024 * 1024, backupCount=5  # 5 MB max, keep 5 backups
     )
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)
